@@ -3,7 +3,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Header from "./ui/Header";
 import theme from "./ui/Theme";
-const App2 = () => {
+const App1 = () => {
   return (
     <div>
       <ThemeProvider theme={theme}>
@@ -50,4 +50,4 @@ const App2 = () => {
   );
 };
 
-export default App2;
+export default App1;
