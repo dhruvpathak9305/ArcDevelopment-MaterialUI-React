@@ -111,7 +111,6 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.modal + 1,
   },
 }));
-
 const Header = (props) => {
   const classes = useStyles();
   // to access the default theme within our component
@@ -120,14 +119,10 @@ const Header = (props) => {
   //Will return true if screen size is below md
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   const [openDrawer, setOpenDrawer] = useState(false);
-  //Det. the current active tab
-  const [value, setValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
-  //Det the selected MenuItem
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const handleChange = (e, newValue) => {
-    setValue(newValue);
+    props.setValue(newValue);
   };
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -138,14 +133,13 @@ const Header = (props) => {
     setAnchorEl(null);
     setOpenMenu(false);
     //To pass the item of item clicked on
-    setSelectedIndex(i);
+    props.setSelectedIndex(i);
   };
   const handleClose = (e) => {
     setAnchorEl(null);
     setOpenMenu(false);
   };
   //Menu Option under the services tab
-
   const menuOptions = [
     { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
     {
@@ -183,16 +177,17 @@ const Header = (props) => {
     { name: "Conatct Us", link: "/contact", activeIndex: 4 },
   ];
   // To see for the effects on Page refresh
-
   useEffect(() => {
     [...menuOptions, ...routes].forEach((route) => {
       switch (window.location.pathname) {
         case `${route.link}`:
-          if (value !== route.activeIndex) {
-            setValue(route.activeIndex);
-
-            if (route.selectedIndex && route.selectedIndex !== selectedIndex) {
-              setSelectedIndex(route.selectedIndex);
+          if (props.value !== route.activeIndex) {
+            props.setValue(route.activeIndex);
+            if (
+              route.selectedIndex &&
+              route.selectedIndex !== props.selectedIndex
+            ) {
+              props.setSelectedIndex(route.selectedIndex);
             }
           }
           break;
@@ -200,12 +195,11 @@ const Header = (props) => {
           break;
       }
     });
-  }, [value, menuOptions, selectedIndex, routes]);
-
+  }, [props.value, menuOptions, props.selectedIndex, routes, props]);
   const tabs = (
     <React.Fragment>
       <Tabs
-        value={value}
+        value={props.value}
         onChange={handleChange}
         className={classes.tabContainer}
         indicatorColor="primary"
@@ -223,7 +217,6 @@ const Header = (props) => {
           />
         ))}
       </Tabs>
-
       <Button
         className={classes.button}
         variant="contained"
@@ -233,14 +226,12 @@ const Header = (props) => {
       >
         Estimate
       </Button>
-
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
         open={openMenu}
         onClose={handleClose}
         //Menu API compoenent extends the paper component
-
         classes={{ paper: classes.menu }}
         MenuListProps={{ onMouseLeave: handleClose }}
         style={{ zIndex: 1302 }}
@@ -255,14 +246,11 @@ const Header = (props) => {
             classes={{ root: classes.menuItem }}
             onClick={(event) => {
               handleMenuItemClick(event, i);
-
-              setValue(1);
-
+              props.setValue(1);
               handleClose();
             }}
             //To apply the styling if the option is the selected one
-
-            selected={i === selectedIndex && value === 1}
+            selected={i === props.selectedIndex && props.value === 1}
           >
             {option.name}
           </MenuItem>
@@ -270,7 +258,6 @@ const Header = (props) => {
       </Menu>
     </React.Fragment>
   );
-
   const drawer = (
     <React.Fragment>
       <SwipeableDrawer
@@ -282,7 +269,6 @@ const Header = (props) => {
         classes={{ paper: classes.drawer }}
       >
         <div className={classes.toolbarMargin} />
-
         <List disablePadding>
           {routes.map((route) => (
             <ListItem
@@ -291,12 +277,12 @@ const Header = (props) => {
               button
               component={Link}
               to={route.link}
-              selected={value === route.activeIndex}
+              selected={props.value === route.activeIndex}
               classes={{ selected: classes.drawerItemSelected }}
               onClick={() => {
                 setOpenDrawer(false);
 
-                setValue(route.activeIndex);
+                props.setValue(route.activeIndex);
               }}
             >
               <ListItemText className={classes.drawerItem} disableTypography>
@@ -304,12 +290,10 @@ const Header = (props) => {
               </ListItemText>
             </ListItem>
           ))}
-
           <ListItem
             onClick={() => {
               setOpenDrawer(false);
-
-              setValue(4);
+              props.setValue(5);
             }}
             divider
             button
@@ -317,10 +301,9 @@ const Header = (props) => {
             to="/estimate"
             classes={{
               root: classes.drawerItemEstimate,
-
               selected: classes.drawerItemSelected,
             }}
-            selected={value === 4}
+            selected={props.value === 5}
           >
             <ListItemText className={classes.drawerItem} disableTypography>
               Free Estimate
@@ -328,19 +311,16 @@ const Header = (props) => {
           </ListItem>
         </List>
       </SwipeableDrawer>
-
       <IconButton
         onClick={() => setOpenDrawer(!openDrawer)}
         disableRipple
         className={classes.drawerIconContainer}
       >
         {/* To increase the icon size */}
-
         <MenuIcon className={classes.drawerIcon} />
       </IconButton>
     </React.Fragment>
   );
-
   return (
     <>
       <ElevationScroll {...props}>
@@ -352,17 +332,15 @@ const Header = (props) => {
               disableRipple
               className={classes.logoContainer}
               onClick={() => {
-                setValue(0);
+                props.setValue(0);
               }}
             >
               <img src={logo} alt="Company LOGO" className={classes.logo} />
             </Button>
-
             {matches ? drawer : tabs}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
-
       <div className={classes.toolbarMargin} />
     </>
   );
