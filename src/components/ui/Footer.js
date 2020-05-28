@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.common.blue,
     width: "100%",
     zIndex: 1302,
+    position: "absolute",
   },
   adornment: {
     width: "25em",
@@ -238,7 +239,7 @@ export default function Footer(props) {
       />
 
       <Grid
-        conatiner
+        container
         justify="flex-end"
         spacing={2}
         className={classes.socialContainer}
