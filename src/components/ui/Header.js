@@ -153,7 +153,7 @@ const Header = (props) => {
       selectedIndex: 1,
     },
     {
-      name: "Mobile App Development",
+      name: "iOS/Android Development",
       link: "/mobileapps",
       activeIndex: 1,
       selectedIndex: 2,
@@ -195,6 +195,9 @@ const Header = (props) => {
             }
           }
           break;
+        case "/estimate":
+          props.setValue(5);
+          break;
         default:
           break;
       }
@@ -227,6 +230,7 @@ const Header = (props) => {
         color="secondary"
         component={Link}
         to="/estimate"
+        onClick={() => props.setValue(5)}
       >
         Estimate
       </Button>
