@@ -192,7 +192,7 @@ export default function LandingPage(props) {
       </Grid>
 
       <Grid item>
-        {/*----------Services Block----------*/}
+        {/*----------Custom Software Block----------*/}
         <Grid
           container
           direction="row"
